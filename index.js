@@ -1,48 +1,67 @@
-const READLINE = require("readline-sync");
+const readline = require("readline-sync");
+const fs = require("fs");
 
-var max =+ process.argv[2];
-if (max === undefined) {
+function main() {
+    const MAX = getMax();
+
+    for (let i = 1; i < MAX + 1; i++) {
+        console.log(`No${i}: ` + getOutput(i));
+    }
+
+}
+
+function getOutput(num) {
+    let output = "";
+    let rules = JSON.parse(fs.readFileSync("./rules.json"));
+    for (let r of rules.rules) {
+        if (num % r.multiple === 0) {
+            output = put_word(output, r);
+            output = overwrite(output, r);
+            if (r.reverse) {
+                output = reverse(output);
+            }
+
+        }
+    }
+
+    if (output === "") {
+        output = num.toString();
+    }
+    return output;
+}
+
+function put_word(output, r) {
+    let index = output.indexOf(r.put_before);
+    if (index === -1 || r.put_before === "") {
+        output += r.word;
+    } else {
+        output = output.slice(0, index) + r.word + output.slice(index);
+    }
+    return output;
+}
+
+function overwrite(output, r) {
+    for (let del_word of r.overwrite) {
+        let index = output.indexOf(del_word);
+        output = output.slice(0, index) + output.slice(index + 4);
+
+    }
+    return output;
+}
+
+function reverse(output) {
+    let reverse = "";
+
+    for (let j = output.length - 4; j >= 0; j -= 4) {
+        reverse += output.slice(j, j + 4);
+    }
+    output = reverse;
+    return output;
+}
+
+function getMax() {
     console.log("Please input the max num:");
-    max =+ READLINE.prompt();
+    return parseInt(readline.prompt());
 }
 
-for (let i = 1; i < max + 1; i++) {
-
-    let str = "";
-    if (i % 3 === 0) {
-        str = "Fizz";
-    }
-    if (i % 5 === 0) {
-        str += "Buzz";
-    }
-    if (i % 7 === 0) {
-        str += "Bang";
-    }
-    if (i % 11 === 0) {
-        str = "Bong"; // overwrite everything in the front
-    }
-    if (i % 13 === 0) {
-        let index = str.indexOf("B");
-        if (index === -1) {
-            str += "Fezz";
-        } else {
-            str = str.slice(0, index) + "Fezz" + str.slice(index);
-        }
-    }
-    if (i % 17 === 0) {
-        let reverse = "";
-
-        for (let j = str.length - 4; j >= 0; j -= 4) {
-            reverse += str.slice(j, j + 4);
-        }
-        str = reverse;
-    }
-
-
-    if (str === "") { // if no word is to be printed, print number
-        str = i.toString();
-    }
-    console.log(`No${i}: ` + str);
-}
-
-
+main();

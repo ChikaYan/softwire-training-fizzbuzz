@@ -1,8 +1,50 @@
 {
-  "rules": {
-  "multiple": 3,
-    "put_before": "",
-    "overwrite":
-  },
-  "words": []
+  "rules": [
+    {
+      "multiple": 3,
+      "word": "Fizz",
+      "put_before": "",
+      "overwrite": [],
+      "reverse": false
+    },
+    {
+      "multiple": 5,
+      "word": "Buzz",
+      "put_before": "",
+      "overwrite": [],
+      "reverse": false
+    },
+    {
+      "multiple": 7,
+      "word": "Bang",
+      "put_before": "",
+      "overwrite": [],
+      "reverse": false
+    },
+    {
+      "multiple": 11,
+      "word": "Bong",
+      "put_before": "",
+      "overwrite": [
+        "Fizz",
+        "Buzz",
+        "Bang"
+      ],
+      "reverse": false
+    },
+    {
+      "multiple": 13,
+      "word": "Fezz",
+      "put_before": "B",
+      "overwrite": [],
+      "reverse": false
+    },
+    {
+      "multiple": 17,
+      "word": "",
+      "put_before": "",
+      "overwrite": [],
+      "reverse": true
+    }
+  ]
 }
